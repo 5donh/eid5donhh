@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>عيدية خالد 🎉</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* تنسيق القائمة الصغيرة */
+        .music-menu {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            list-style: none;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .music-menu li {
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .music-menu li:hover {
+            background-color: #f0f0f0;
+            transform: scale(1.05);
+        }
+
+        #playMusicButton {
+            background-color: #28a745;
+            color: white;
+        }
+
+        #changeSongButton {
+            background-color: #ffc107;
+            color: white;
+        }
+
+        #stopSongButton {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        #volumeControl {
+            width: 80px; /* تصغير عرض شريط مستوى الصوت */
+            cursor: pointer;
+        }
+
+        /* تنسيق أيقونة القائمة */
+        .menu-icon {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            display: none; /* مخفية بشكل افتراضي */
+        }
+
+        .twitter-link {
+            color: #00acee; /* لون سماوي لعلامة تويتر */
+            text-decoration: none;
+            font-size: 1.2em;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+        }
+
+        .twitter-link i {
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <!-- رابط حساب تويتر -->
+    <a href="https://x.com/5donhh" class="twitter-link" target="_blank">
+        <i class="fab fa-twitter"></i> حساب الرهيب خالد
+    </a>
+
+    <!-- الصفحة الرئيسية -->
+    <div class="home-page">
+        <div class="container">
+            <div class="icon">🎁</div>
+            <h1>اختبار العيدية 🎁</h1>
+            <p>اختبر معلوماتك واربح العيدية! 🎉</p>
+            <input type="text" id="userName" placeholder="أدخل اسمك هنا">
+            <button onclick="startQuiz()">ابدأ الاختبار</button>
+        </div>
+    </div>
+
+    <!-- صفحة الاختبار -->
+    <div class="quiz-page">
+        <div class="points">النقاط: <span id="totalPoints">0</span> ريال</div>
+        <div class="container">
+            <h1>عيدية خالد 🎁</h1>
+            <div id="quiz">
+                <p id="question"></p>
+                <div id="options"></div>
+                <div class="timer">الوقت المتبقي: <span id="time">30</span> ثانية</div>
+                <button id="checkBtn" onclick="checkAnswer()">تحقق</button>
+                <p id="result"></p>
+                <p id="rewardText"></p>
+                <img id="rewardImage" src="" style="display: none; width: 150px; margin-top: 10px;">
+            </div>
+        </div>
+    </div>
+
+    <!-- شهادة الإنجاز -->
+    <div class="certificate" id="certificate">
+        <h2>شهادة إنجاز 🏆</h2>
+        <p>مبروك <span id="certificateName"></span>! لقد حصلت على <span id="certificatePoints"></span> ريال في اختبار العيدية.</p>
+        <button onclick="restartQuiz()">إعادة الاختبار</button>
+    </div>
+
+    <!-- حقوق الملكية -->
+    <div class="footer">
+        <p>تم التطوير بواسطة <a href="https://x.com/5donhh" target="_blank">خالد</a> | جميع الحقوق محفوظة &copy; 2023</p>
+    </div>
+
+    <!-- الأغاني -->
+    <audio id="music1" loop>
+        <source src="music/Song1.mp3.mp3" type="audio/mpeg">
+        المتصفح الخاص بك لا يدعم تشغيل الصوتيات.
+    </audio>
+    <audio id="music2" loop>
+        <source src="music/Song2.mp3.mp3" type="audio/mpeg">
+        المتصفح الخاص بك لا يدعم تشغيل الصوتيات.
+    </audio>
+
+    <!-- قائمة الموسيقى -->
+    <ul class="music-menu" id="musicMenu">
+        <li id="playMusicButton">تشغيل الموسيقى</li>
+        <li id="changeSongButton">تغيير الأغنية</li>
+        <li id="stopSongButton">إيقاف الأغنية</li>
+        <li>
+            <label for="volumeControl" style="font-size: 0.9em; color: #333;">مستوى الصوت:</label>
+            <input type="range" id="volumeControl" min="0" max="1" step="0.1" value="0.5">
+        </li>
+    </ul>
+
+    <!-- أيقونة القائمة -->
+    <div class="menu-icon" id="menuIcon" onclick="toggleMenu()">
+        <i class="fas fa-bars"></i> <!-- أيقونة ثلاثة خطوط -->
+    </div>
+
+    <script>
+        // تعريف المتغيرات العامة
+        let currentQuestion = 0;
+        let selectedAnswer = "";
+        let timer;
+        let timeLeft = 30;
+        let totalPoints = 0;
+        let userName = "";
+
+        const questions = [
+            { question: "مين احسن واحد بالعالم؟", options: ["خالد", "خلودي", "5donhh", "جميع ماذكر"], answer: "جميع ماذكر", reward: 1 },
+            { question: "مين الشخص اللي مستحيل أحد يتفوق عليه؟", options: ["خالد", "خلودي الرهيب", "شخص عشوائي", "واحد ماعنده سالفه"], answer: "خلودي الرهيب", reward: 5 },
+            { question: "وش أفضل لقب يوصف خالد؟", options: ["القائد العظيم", "المخطط المحنك", "الشخص اللي الكل يهابه", "المعجزة اللي ما تتكرر", "جميع ماذكر"], answer: "جميع ماذكر", reward: 10 },
+            { question: "إذا دخل خالد منافسة، وش النتيجة المتوقعة؟", options: ["فوز ساحق", "خصومه ينسحبون", "انتصار بدون مجهود", "اللعبة تنتهي قبل تبدأ"], answer: "اللعبة تنتهي قبل تبدأ", reward: 20 },
+            { question: "وش أقوى مهارة عند خالد؟", options: ["ذكاء خارق", "سرعة بديهة مدهشة", "كاريزما تخلي الكل يستمع له", "قدرة على النجاح في أي شيء", "جميع ماذكر"], answer: "جميع ماذكر", reward: 50 },
+            { question: "لو خالد كان شخصية في فيلم، وش بيكون دوره؟", options: ["البطل اللي مستحيل ينهزم", "العقل المدبر لكل الأحداث", "الزعيم اللي الكل يحترمه", "الشخص اللي عنده الحلول لكل مشكلة", "جميع ماذكر"], answer: "جميع ماذكر", reward: 100 },
+            { question: "وش الشيء الوحيد اللي يخلي خالد يخسر؟", options: ["ما فيه شيء يقدر يهزمه", "قوانين الفيزياء تحاول، بس تفشل", "لما يقرر يعطي فرصة لغيره", "لما يلعب ضد نفسه"], answer: "قوانين الفيزياء تحاول، بس تفشل", reward: 200 },
+            { question: "مين الشطور؟", options: ["خالد", "خلودي", "5donhh", "الشطور خلودي"], answer: "الشطور خلودي", reward: 500 }
+        ];
+
+        // تشغيل الأغنية العشوائية
+        window.onload = function() {
+            const songs = [
+                document.getElementById("music1"),
+                document.getElementById("music2")
+            ];
+
+            // اختيار أغنية عشوائية
+            let currentSongIndex = Math.floor(Math.random() * songs.length);
+            let randomSong = songs[currentSongIndex];
+
+            // تشغيل الأغنية المختارة
+            randomSong.play().catch(error => {
+                console.log("المتصفح يمنع التشغيل التلقائي. يرجى التفاعل مع الصفحة لتشغيل الموسيقى.");
+            });
+
+            // تشغيل الأغنية التالية بعد انتهاء الأولى
+            randomSong.addEventListener("ended", () => {
+                currentSongIndex = (currentSongIndex + 1) % songs.length; // الانتقال إلى الأغنية التالية
+                randomSong = songs[currentSongIndex];
+                randomSong.play();
+            });
+
+            // زر تغيير الأغنية
+            document.getElementById("changeSongButton").addEventListener("click", () => {
+                randomSong.pause(); // إيقاف الأغنية الحالية
+                currentSongIndex = (currentSongIndex + 1) % songs.length; // الانتقال إلى الأغنية التالية
+                randomSong = songs[currentSongIndex];
+                randomSong.play(); // تشغيل الأغنية الجديدة
+            });
+
+            // زر إيقاف الأغنية
+            document.getElementById("stopSongButton").addEventListener("click", () => {
+                randomSong.pause(); // إيقاف الأغنية فقط
+            });
+
+            // التحكم في مستوى الصوت
+            const volumeControl = document.getElementById("volumeControl");
+            volumeControl.addEventListener("input", () => {
+                randomSong.volume = volumeControl.value; // تغيير مستوى الصوت
+            });
+
+            // تشغيل الأغنية عند النقر على زر التشغيل
+            document.getElementById("playMusicButton").addEventListener("click", () => {
+                randomSong.play();
+            });
+        };
+
+        // بدء الاختبار
+        function startQuiz() {
+            userName = document.getElementById("userName").value.trim();
+            if (userName === "") {
+                alert("الرجاء إدخال اسمك!");
+                return;
+            }
+            document.querySelector('.home-page').style.display = 'none';
+            document.querySelector('.quiz-page').style.display = 'block';
+            document.getElementById("musicMenu").style.display = "none"; // إخفاء القائمة الأصلية
+            document.getElementById("menuIcon").style.display = "block"; // إظهار أيقونة القائمة
+            loadQuestion();
+        }
+
+        // تحميل السؤال
+        function loadQuestion() {
+            document.getElementById("result").innerText = "";
+            document.getElementById("rewardText").innerText = "";
+            document.getElementById("rewardImage").style.display = "none";
+            document.getElementById("question").innerText = questions[currentQuestion].question;
+            document.getElementById("checkBtn").style.display = "none";
+            let optionsHtml = "";
+            questions[currentQuestion].options.forEach(option => {
+                optionsHtml += `<div class='option' data-option='${option}' onclick='selectAnswer(this)'>${option}</div>`;
+            });
+            document.getElementById("options").innerHTML = optionsHtml;
+            startTimer();
+        }
+
+        // اختيار الإجابة
+        function selectAnswer(element) {
+            selectedAnswer = element.getAttribute("data-option");
+            document.querySelectorAll('.option').forEach(el => el.classList.remove("selected"));
+            element.classList.add("selected");
+            document.getElementById("checkBtn").style.display = "block";
+        }
+
+        // التحقق من الإجابة
+        function checkAnswer() {
+            if (!selectedAnswer) return;
+            clearInterval(timer);
+            let resultText = document.getElementById("result");
+            let rewardText = document.getElementById("rewardText");
+            if (selectedAnswer === questions[currentQuestion].answer) {
+                resultText.innerText = "✅ إجابة صحيحة!";
+                totalPoints += questions[currentQuestion].reward;
+                document.getElementById("totalPoints").innerText = totalPoints;
+                rewardText.innerText = `مكافأتك: ${questions[currentQuestion].reward} ريال`;
+                document.querySelector(`[data-option='${selectedAnswer}']`).classList.add("correct");
+            } else {
+                resultText.innerText = "❌ إجابة خاطئة!";
+                resultText.classList.add("shake");
+                document.querySelector(`[data-option='${selectedAnswer}']`).classList.add("wrong");
+            }
+            setTimeout(nextQuestion, 1500); // الانتقال إلى السؤال التالي بعد 1.5 ثانية
+        }
+
+        // الانتقال إلى السؤال التالي
+        function nextQuestion() {
+            currentQuestion++;
+            if (currentQuestion < questions.length) {
+                loadQuestion();
+            } else {
+                document.getElementById("quiz").innerHTML = `
+                    <h2>🎉 مبروك! أكملت الاختبار!</h2>
+                    <p>${userName}، خالد أفضل واحد بالعالم: <strong>${totalPoints} ريال</strong></p>
+                    <div class="share-buttons">
+                        <a href="https://twitter.com/intent/tweet?text=خالد أفضل واحد بالعالم @5donhh" class="twitter" target="_blank">شارك على تويتر</a>
+                        <a href="https://api.whatsapp.com/send?text=خالد أفضل واحد بالعالم @5donhh" class="whatsapp" target="_blank">شارك على واتساب</a>
+                    </div>
+                `;
+                showCertificate();
+            }
+        }
+
+        // عرض شهادة الإنجاز
+        function showCertificate() {
+            document.getElementById("certificateName").innerText = userName;
+            document.getElementById("certificatePoints").innerText = totalPoints;
+            document.getElementById("certificate").style.display = "block";
+        }
+
+        // إعادة الاختبار
+        function restartQuiz() {
+            currentQuestion = 0;
+            totalPoints = 0;
+            document.getElementById("certificate").style.display = "none";
+            document.querySelector('.quiz-page').style.display = 'none';
+            document.querySelector('.home-page').style.display = 'flex';
+            document.getElementById("musicMenu").style.display = "flex"; // إظهار القائمة الأصلية
+            document.getElementById("menuIcon").style.display = "none"; // إخفاء أيقونة القائمة
+        }
+
+        // تبديل عرض القائمة
+        function toggleMenu() {
+            const menu = document.getElementById("musicMenu");
+            if (menu.style.display === "none" || menu.style.display === "") {
+                menu.style.display = "flex";
+            } else {
+                menu.style.display = "none";
+            }
+        }
+
+        // بدء العداد
+        function startTimer() {
+            timeLeft = 30;
+            document.getElementById("time").innerText = timeLeft;
+            clearInterval(timer);
+            timer = setInterval(() => {
+                timeLeft--;
+                document.getElementById("time").innerText = timeLeft;
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    document.getElementById("result").innerText = "⏰ انتهى الوقت!";
+                    setTimeout(nextQuestion, 1500); // الانتقال إلى السؤال التالي بعد انتهاء الوقت
+                }
+            }, 1000);
+        }
+    </script>
+</body>
+</html>

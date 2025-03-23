@@ -1,0 +1,234 @@
+/* الألوان العامة */
+:root {
+    --primary-color: #28a745;
+    --secondary-color: #218838;
+    --background-color: #f4f4f4;
+    --text-color: #333;
+    --correct-color: #d4edda;
+    --wrong-color: #f8d7da;
+    --timer-color: #dc3545;
+    --button-hover: #1e7e34;
+}
+
+body {
+    font-family: 'Tajawal', Arial, sans-serif;
+    text-align: center;
+    background-color: var(--background-color);
+    direction: rtl;
+    margin: 0;
+    padding: 0;
+    color: var(--text-color);
+}
+
+.container {
+    width: 50%;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 50px;
+    position: relative;
+}
+
+button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    border: none;
+    background: var(--primary-color);
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background 0.3s, transform 0.2s;
+}
+
+button:hover {
+    background: var(--button-hover);
+    transform: scale(1.05);
+}
+
+.option {
+    display: block;
+    background: #e9ecef;
+    padding: 15px;
+    margin: 10px auto;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+    font-size: 1.1em;
+}
+
+.option:hover, .selected {
+    background: #d6d8db;
+    transform: scale(1.02);
+}
+
+.correct {
+    background: var(--correct-color) !important;
+    color: #155724;
+}
+
+.wrong {
+    background: var(--wrong-color) !important;
+    color: #721c24;
+}
+
+.shake {
+    animation: shake 0.3s;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+}
+
+.timer {
+    font-size: 1.2em;
+    margin: 10px 0;
+    color: var(--timer-color);
+    font-weight: bold;
+}
+
+.points {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    font-size: 1.5em;
+    background: #ffffff;
+    color: var(--text-color);
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.home-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: url('background.jpg') no-repeat center center/cover;
+    color: white;
+}
+
+.home-page .container {
+    background: rgba(255, 255, 255, 0.9);
+    color: var(--text-color);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.home-page h1 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    color: var(--primary-color);
+}
+
+.home-page p {
+    font-size: 1.2em;
+    margin-bottom: 30px;
+}
+
+.quiz-page {
+    display: none;
+    background: url('quiz-background.jpg') no-repeat center center/cover;
+    height: 100vh;
+    padding-top: 50px;
+}
+
+.share-buttons {
+    margin-top: 20px;
+}
+
+.share-buttons a {
+    display: inline-block;
+    margin: 5px;
+    padding: 10px 20px;
+    color: white;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 1em;
+    transition: transform 0.2s;
+}
+
+.share-buttons a:hover {
+    transform: scale(1.05);
+}
+
+.share-buttons .twitter {
+    background-color: #1DA1F2;
+}
+
+.share-buttons .whatsapp {
+    background-color: #25D366;
+}
+
+.footer {
+    margin-top: 30px;
+    font-size: 0.9em;
+    color: #666;
+}
+
+.footer a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.footer a:hover {
+    text-decoration: underline;
+}
+
+input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+    width: 80%;
+    margin-bottom: 20px;
+    transition: border-color 0.3s;
+}
+
+input:focus {
+    border-color: var(--primary-color);
+    outline: none;
+}
+
+.certificate {
+    display: none;
+    margin-top: 20px;
+    padding: 20px;
+    background: #fff3cd;
+    border: 2px solid #ffeeba;
+    border-radius: 10px;
+}
+
+.certificate h2 {
+    color: #856404;
+}
+
+.certificate p {
+    font-size: 1.2em;
+    color: #856404;
+}
+
+.icon {
+    font-size: 2em;
+    margin-bottom: 10px;
+}
+
+.twitter-link {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    font-size: 1.2em;
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.twitter-link:hover {
+    color: var(--button-hover);
+}
